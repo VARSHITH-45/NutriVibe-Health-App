@@ -1,0 +1,177 @@
+/* 
+ * NutriVibe - Premium Dark Glassmorphism Edition
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-primary: #0a0e27;
+    --bg-secondary: #12183d;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    --accent-green: #00d68f;
+    --accent-orange: #ff6b35;
+    --accent-blue: #4fc3f7;
+    --accent-purple: #bb86fc;
+    --accent-red: #ff5252;
+    
+    --text-main: #ffffff;
+    --text-muted: #a0a0c0;
+    
+    --grad-green: linear-gradient(135deg, #00d68f, #00ab72);
+    --grad-orange: linear-gradient(135deg, #ff6b35, #e85a20);
+    --grad-blue: linear-gradient(135deg, #4fc3f7, #2196f3);
+    
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --blur: blur(20px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+}
+
+/* Layout */
+#app { display: flex; min-height: 100vh; }
+
+aside {
+    width: 260px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--glass-border);
+    padding: 2rem 1.5rem;
+    position: fixed;
+    height: 100vh;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 3rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: var(--glass-bg);
+    color: var(--text-main);
+}
+
+.nav-link.active {
+    border-left: 3px solid var(--accent-green);
+}
+
+main { margin-left: 260px; padding: 2.5rem; flex: 1; max-width: 1400px; }
+
+.section { display: none; animation: fadeIn 0.5s ease-out; }
+.section.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Components */
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.glass-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.primary-btn {
+    background: var(--grad-green);
+    border: none;
+    font-weight: 600;
+}
+
+input, select, textarea {
+    background: var(--bg-secondary);
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    width: 100%;
+}
+
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+    z-index: 2;
+}
+
+/* Add a custom icon visual */
+input[type="date"]::after {
+    content: '📅'; 
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+.stat-value { font-size: 2rem; font-weight: 700; }
+.stat-label { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; }
+
+.progress-bar-bg { background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; overflow: hidden; }
+#cal-progress { background: var(--grad-green) !important; height: 100%; }
+
+@media (max-width: 992px) {
+    aside { width: 80px; }
+    .logo span, .nav-link span { display: none; }
+    main { margin-left: 80px; }
+}

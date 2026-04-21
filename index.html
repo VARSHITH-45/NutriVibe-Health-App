@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriVibe | Smart Food & Health Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts & Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Google Charts CDN -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="logo">
+                <span class="material-symbols-outlined">nutrition</span>
+                <span>NutriVibe</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a class="nav-link active" data-section="dashboard">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="ai-advisor">
+                        <span class="material-symbols-outlined">psychology</span>
+                        <span>Meal Log & Analyze</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="suggestions">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        <span>Suggestions</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="meal-tracker">
+                        <span class="material-symbols-outlined">restaurant</span>
+                        <span>Meals</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="water-tracker">
+                        <span class="material-symbols-outlined">water_drop</span>
+                        <span>Hydration</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="bmi-calc">
+                        <span class="material-symbols-outlined">monitor_weight</span>
+                        <span>BMI Calc</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="progress">
+                        <span class="material-symbols-outlined">bar_chart</span>
+                        <span>Progress</span>
+                    </a></li>
+                    <li><a class="nav-link" data-section="profile">
+                        <span class="material-symbols-outlined">person</span>
+                        <span>Profile</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <h1 id="greeting">Good Day!</h1>
+                <p class="text-muted">Here's your health overview for today.</p>
+                
+                <div class="grid-stats" style="margin-top: 2rem;">
+                    <div class="card stat-card">
+                        <span class="stat-label">Calories Remaining</span>
+                        <span class="stat-value" id="cal-remaining">2,000</span>
+                        <div class="progress-bar-bg" style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                            <div id="cal-progress" style="width: 0%; height: 100%; background: var(--grad-green); transition: width 1s;"></div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <span class="stat-label">Water Intake</span>
+                        <span class="stat-value" id="water-stat">0 / 2500 ml</span>
+                    </div>
+                    <div class="card stat-card">
+                        <span class="stat-label">Health Score</span>
+                        <span class="stat-value" style="color: var(--accent-purple)">84</span>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3>Daily Macro Goals</h3>
+                    <div id="daily_macro_chart" style="width: 100%; height: 250px;"></div>
+                </div>
+            </section>
+
+            <!-- AI Advisor Section -->
+            <section id="ai-advisor" class="section">
+                <h1>Meal Log & Analyze</h1>
+                <p class="text-muted">Analyze your meals or get personalized suggestions.</p>
+
+                <div class="card" style="margin: 2rem 0;">
+                    <h3>Log a meal (AI Analysis)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <select id="meal-category" style="padding: 0.75rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm); width: auto;">
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                                <option value="Snack">Snack</option>
+                            </select>
+                            <input type="text" id="meal-input" placeholder="e.g., Two scrambled eggs and an avocado toast" 
+                                   style="flex: 1; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                        </div>
+                        <button class="glass-btn primary-btn" id="analyze-btn">Analyze & Log Meal</button>
+                    </div>
+                </div>
+
+                <div id="ai-results" style="display: none;">
+                    <div class="card" style="border-left: 4px solid var(--accent-purple)">
+                        <h3>Analysis Result</h3>
+                        <div id="analysis-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestions Section -->
+            <section id="suggestions" class="section">
+                <h1>Smart AI Suggestions</h1>
+                <p class="text-muted">Personalized meal ideas based on your health profile and history.</p>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <h3>Personalized Meal Plan</h3>
+                    <p class="text-muted">Generated based on your height, weight, and health conditions.</p>
+                    <button class="glass-btn" id="suggest-btn" style="margin-top: 1rem;">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        Generate Suggestions
+                    </button>
+                    <div id="suggestions-area" style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <!-- AI Cards injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile / Settings -->
+            <section id="profile" class="section">
+                <h1>User Profile</h1>
+                <div class="card" style="margin-top: 2rem;">
+                    <h3>API Settings</h3>
+                    <p class="text-muted" style="margin-bottom: 1.5rem;">Enter your Gemini API key to enable AI features. Key is stored locally in your session.</p>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <input type="password" id="api-key-input" placeholder="Enter API Key" 
+                               style="padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                        <button class="glass-btn primary-btn" id="save-key-btn">Save Key</button>
+                    </div>
+                    
+                    <div id="model-discovery-area" style="margin-top: 2rem; display: none;">
+                        <h3>Available Models</h3>
+                        <p class="text-muted">Select a model that works for your account.</p>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <select id="model-select" style="flex: 1; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                                <option value="gemini-1.5-flash">gemini-1.5-flash (Default)</option>
+                            </select>
+                            <button class="glass-btn" id="discover-models-btn">Check Availability</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 2rem;">
+                        <h3>Personal Details</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <input type="number" id="prof-age" placeholder="Age" class="glass-input" style="padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                            <select id="prof-focus" class="glass-input" style="padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                                <option value="Mediterranean">Mediterranean</option>
+                                <option value="Vegan">Vegan</option>
+                                <option value="Keto">Keto</option>
+                                <option value="Paleo">Paleo</option>
+                                <option value="High Protein">High Protein</option>
+                            </select>
+                        </div>
+                        <textarea id="prof-conditions" placeholder="Health Conditions (e.g. Diabetes, Hypertension, Gluten Allergy)" 
+                                  style="width: 100%; height: 80px; margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);"></textarea>
+                        <button class="glass-btn primary-btn" id="save-profile-btn" style="width: 100%; margin-top: 1rem;">Update Profile</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other sections placeholders (to be expanded in logic) -->
+            <section id="meal-tracker" class="section">
+                <h1>Meal History</h1>
+                <p class="text-muted">Review and filter your nutritional history.</p>
+                
+                <!-- Filter Bar -->
+                <div class="card" style="margin-top: 1.5rem; padding: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+                    <div style="flex: 1; min-width: 150px;">
+                        <label class="stat-label" style="font-size: 0.7rem;">Filter by Date</label>
+                        <input type="date" id="filter-date" style="padding: 0.5rem; width: 100%;">
+                    </div>
+                    <div style="flex: 1; min-width: 150px;">
+                        <label class="stat-label" style="font-size: 0.7rem;">Category</label>
+                        <select id="filter-category" style="padding: 0.5rem; width: 100%;">
+                            <option value="all">All Categories</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Snack">Snack</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1; min-width: 150px;">
+                        <label class="stat-label" style="font-size: 0.7rem;">Sort By</label>
+                        <select id="filter-sort" style="padding: 0.5rem; width: 100%;">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="calories-high">Calories (High-Low)</option>
+                            <option value="calories-low">Calories (Low-High)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="meal-history-list" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="card">No meals logged yet.</div>
+                </div>
+            </section>
+            <section id="water-tracker" class="section">
+                <h1>Hydration Tracker</h1>
+                <p class="text-muted">Track your daily water intake to stay healthy.</p>
+                <div class="card" style="margin-top: 2rem; text-align: center; padding: 3rem;">
+                    <span class="material-symbols-outlined" style="font-size: 5rem; color: var(--accent-blue);">water_drop</span>
+                    <h2 id="water-display" style="margin: 1rem 0;">0 / 2500 ml</h2>
+                    <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+                        <button class="glass-btn add-water-btn" data-amount="250">+ 250ml</button>
+                        <button class="glass-btn add-water-btn" data-amount="500">+ 500ml</button>
+                        <button class="glass-btn add-water-btn" data-amount="1000">+ 1L</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bmi-calc" class="section">
+                <h1>BMI Calculator</h1>
+                <div class="card" style="margin-top: 2rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <label class="stat-label">Height (cm)</label>
+                            <input type="number" id="bmi-height" value="175" style="width: 100%; padding: 1rem; margin-top: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                        </div>
+                        <div>
+                            <label class="stat-label">Weight (kg)</label>
+                            <input type="number" id="bmi-weight" value="70" style="width: 100%; padding: 1rem; margin-top: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; border-radius: var(--radius-sm);">
+                        </div>
+                    </div>
+                    <button class="glass-btn primary-btn" id="calc-bmi-btn" style="width: 100%; margin-top: 1.5rem;">Calculate BMI</button>
+                    
+                    <div id="bmi-results-area" style="margin-top: 2rem; text-align: center; display: block;">
+                        <h2 id="bmi-result">22.9</h2>
+                        <p id="bmi-category" style="font-weight: 600; color: var(--accent-green);">Normal Weight</p>
+                    </div>
+                </div>
+            </section>
+            <section id="progress" class="section">
+                <h1>Your Progress</h1>
+                <p class="text-muted">Tracking your consistency and health trends.</p>
+                <div class="card" style="margin-top: 2rem;">
+                    <h3>Weekly Calorie Intake</h3>
+                    <div id="progress_line_chart" style="width: 100%; height: 300px;"></div>
+                </div>
+                <div class="grid-stats" style="margin-top: 2rem;">
+                    <div class="card">
+                        <span class="stat-label">Current Streak</span>
+                        <span class="stat-value" style="color: var(--accent-orange)">5 Days 🔥</span>
+                    </div>
+                    <div class="card">
+                        <span class="stat-label">Avg Health Score</span>
+                        <span class="stat-value" style="color: var(--accent-green)">78%</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="gemini.js"></script>
+    <script src="charts.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
